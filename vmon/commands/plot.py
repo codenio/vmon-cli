@@ -11,32 +11,10 @@ aananthraj1995@gmail.com
 import click
 from datetime import datetime
 
-import numpy as np
-from scipy import interpolate
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def get_rx_spectrum(file_name, interpolation="cubic", normalise=False):
-    # Resolution of IMon 512 USB is 0.166015625 nm = 166.015 pm
-    x = np.arange(1510,1595,0.166015625,dtype=float)
-    dx = np.arange(1510,1595,0.001000000,dtype=float)
-
-    # load data into data frame
-    df = pd.read_csv(file_name,sep="\t",error_bad_lines=False)
-    df = df[[f"Pixel {i}" for i in range(1, 513)]]
-    # calculate mean of all the entries and reverse it
-    mean = df.mean().values[::-1]
-
-    if interpolation == "cubic":
-        # perform cublic spline interpolation
-        cs = interpolate.CubicSpline(x, mean)
-        dy = cs(dx)
-
-    if normalise:
-        dy = dy /max(dy)
-
-    return dx, dy
-
+from vmon.spectrum import read_rx_spectrum
 
 @click.command()
 @click.argument('files', required=True ,nargs=-1)
@@ -52,11 +30,11 @@ def cli(files, path, title, normalise, peaks):
         plt.xlabel("Wavelength (nm)")
         plt.ylabel("Normalised Amplitude (AU)")
         plt.grid("True")
-        dx, dy = get_rx_spectrum(path+file, normalise=normalise)
+        dx, dy = read_rx_spectrum(path+file, normalise=normalise)
         if peaks:
             dxmaxp = dx[dy.argmax()]
-            plt.plot(dx,dy,label=f"{file.split('/')[0]}, {dx[dy.argmax()]:.2f} nm")
+            plt.plot(dx,dy,label=f"{file.split('/')[-1].split('.')[0]}, {dx[dy.argmax()]:.2f} nm")
         else:
-        	plt.plot(dx,dy,label="%s"%(file.split('/')[0]))
+        	plt.plot(dx,dy,label=f"{file.split('/')[-1].split('.')[0]}")
         plt.legend()
     plt.show()
