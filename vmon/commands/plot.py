@@ -22,13 +22,14 @@ def get_rx_spectrum(file_name, interpolation="cubic", normalise=False):
     dx = np.arange(1510,1595,0.001000000,dtype=float)
 
     # load data into data frame
-    df = pd.read_csv(file_name,dtype=float,usecols=[i for i in range(3,515)],sep="\t", skiprows=2)
+    df = pd.read_csv(file_name,sep="\t",error_bad_lines=False)
+    df = df[[f"Pixel {i}" for i in range(1, 513)]]
     # calculate mean of all the entries and reverse it
-    mean = df.mean()[::-1]
-    
+    mean = df.mean().values[::-1]
+
     if interpolation == "cubic":
         # perform cublic spline interpolation
-        cs = interpolate.CubicSpline(x, mean)    
+        cs = interpolate.CubicSpline(x, mean)
         dy = cs(dx)
 
     if normalise:
