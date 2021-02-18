@@ -5,6 +5,23 @@ vmon-cli - CLI Viewer for Ibsen 512 USB interrogator
 
 ## Installation
 
+- Install Using pip
+```bash
+    $ pip install vmon-cli
+    $ pip install vmon-cli --no-cache
+    Collecting vmon-cli
+      Downloading vmon_cli-0.2.0-py3-none-any.whl (17 kB)
+    Collecting Pillow==8.0.1
+      Downloading Pillow-8.0.1-cp36-cp36m-manylinux1_x86_64.whl (2.2 MB)
+         |████████████████████████████████| 2.2 MB 12.3 MB/s
+    Requirement already satisfied: pyparsing==2.4.7 in /home/aananth/.virtualenvs/opencv/lib/python3.6/site-packages (from vmon-cli) (2.4.7)
+    Collecting numpy==1.19.4
+      Downloading numpy-1.19.4-cp36-cp36m-manylinux2010_x86_64.whl (14.5 MB)
+         |████████████████████████████████| 14.5 MB 11.9 MB/s
+    ...
+```
+
+- Install from Source
 ```bash
 # clone the repository
 $ git clone git@github.com:codenio/vmon-cli.git

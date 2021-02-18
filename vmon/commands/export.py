@@ -1,5 +1,5 @@
 """
-vmon export - export I-Mon data into CSV or XLSX
+vmon export - export I-Mon data into CSV
 
 09-12-2020
 
